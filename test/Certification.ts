@@ -65,8 +65,8 @@ describe("Certification", function () {
         expect(certification[4]).to.equal(0);
     });
 
-    it("must not transfer a certification", async function () {
-        const certificationId = 1;
+    it("should not transfer a certification", async function () {
+        const certificationId = 0;
         const recipient1 = addr1.address;
         const recipient2 = addr2.address;
 
@@ -78,8 +78,8 @@ describe("Certification", function () {
         expect(certificationContract.transferFrom(recipient1, recipient2, certificationId)).be.revertedWith;
     });
 
-    it("must not safely transfer a certification", async function () {
-        const certificationId = 1;
+    it("should not safely transfer a certification", async function () {
+        const certificationId = 0;
         const recipient1 = addr1.address;
         const recipient2 = addr2.address;
 

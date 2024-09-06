@@ -1,11 +1,7 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-
-const CertificationModule = buildModule("CertificationModule", (m) => {
-
+export default buildModule("Educhain", (m) => {
     const certification = m.contract("Certification", []);
 
     return { certification };
 });
-
-export default CertificationModule;
