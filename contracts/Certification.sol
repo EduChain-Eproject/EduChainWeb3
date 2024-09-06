@@ -18,10 +18,10 @@ contract Certification is ERC721, Ownable {
     }
 
     struct CertificationMetadata {
-        uint256 issueDate;
-        uint256 teacher;
-        uint256 student;
-        uint256 course;
+        uint48 issueDate;
+        uint16 teacher;
+        uint16 student;
+        uint16 course;
         CertificationType certificationType;
     }
 
@@ -49,7 +49,7 @@ contract Certification is ERC721, Ownable {
     /**
      * @dev Issues a new certification.
      * @param recipient The address of the recipient.
-     * @param issueDate The date of issuance.
+     * @param issueDate The Timestamp of issuance.
      * @param teacher The ID of the teacher.
      * @param student The ID of the student.
      * @param course The ID of the course.
@@ -58,10 +58,10 @@ contract Certification is ERC721, Ownable {
      */
     function issueCertification(
         address recipient,
-        uint256 issueDate,
-        uint256 teacher,
-        uint256 student,
-        uint256 course,
+        uint48 issueDate,
+        uint16 teacher,
+        uint16 student,
+        uint16 course,
         CertificationType certificationType
     ) external onlyOwner returns (uint256) {
         uint256 certificationId = certificationCount;
@@ -116,14 +116,11 @@ contract Certification is ERC721, Ownable {
 
     /**
      * @dev Overrides the transferFrom function to disallow transfers.
-     * @param from The address to transfer from.
-     * @param to The address to transfer to.
-     * @param tokenId The ID of the certification to transfer.
      */
     function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
+        address /*from*/,
+        address /*to*/,
+        uint256 /*tokenId*/
     ) public pure override(ERC721) {
         revert("Certification: Transfers are not allowed");
     }
