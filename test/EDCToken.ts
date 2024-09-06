@@ -6,7 +6,7 @@ import { EDCToken } from "../typechain-types";
 
 describe("EDCToken Contract", function () {
     const INITIAL_SUPPLY: bigint = 1_000n;
-    const DECIMALS = 3;
+    const DECIMALS = 18;
     let edcToken: EDCToken & { deploymentTransaction(): ContractTransactionResponse; };
     let owner: any;
     let addr1: any;
@@ -16,11 +16,11 @@ describe("EDCToken Contract", function () {
 
         const EDCToken = await hre.ethers.getContractFactory("EDCToken");
         [owner, addr1, addr2] = await hre.ethers.getSigners();
-        edcToken = await EDCToken.deploy(INITIAL_SUPPLY);
+        edcToken = await EDCToken.deploy(INITIAL_SUPPLY * BigInt((10 ** DECIMALS)));
     });
 
     it("Should assign the initial supply of tokens to the owner", async function () {
-        expect(await edcToken.balanceOf(owner.address)).to.equal(Number(INITIAL_SUPPLY) * (10 ** DECIMALS));
+        expect(await edcToken.balanceOf(owner.address)).to.equal(INITIAL_SUPPLY * BigInt((10 ** DECIMALS)));
     });
 
     it("Should transfer tokens between accounts", async function () {
@@ -58,7 +58,7 @@ describe("EDCToken Contract", function () {
 
         // Check balances.
         const finalOwnerBalance = await edcToken.balanceOf(owner.address);
-        expect(finalOwnerBalance).to.equal(Number(initialOwnerBalance) - 150);
+        expect(finalOwnerBalance).to.equal(initialOwnerBalance - BigInt(150));
 
         const addr1Balance = await edcToken.balanceOf(addr1.address);
         expect(addr1Balance).to.equal(100);
@@ -79,7 +79,7 @@ describe("EDCToken Contract", function () {
         await edcToken.burn(50);
 
         const afterBurnBalance = await edcToken.balanceOf(owner.address);
-        expect(afterBurnBalance).to.equal((Number(initialOwnerBalance) - 50));
+        expect(afterBurnBalance).to.equal(initialOwnerBalance - BigInt(50));
     });
 
     it("Should revoke awarded tokens", async function () {
@@ -100,7 +100,7 @@ describe("EDCToken Contract", function () {
         expect(addr2Balance).to.equal(50);
 
         const afterAirdropBalance = await edcToken.balanceOf(owner.address);
-        expect(afterAirdropBalance).to.equal(Number(initialOwnerBalance) - 100);
+        expect(afterAirdropBalance).to.equal(initialOwnerBalance - BigInt(100));
     });
 
     it("Should airdrop new tokens", async function () {
@@ -113,6 +113,6 @@ describe("EDCToken Contract", function () {
 
     it("Should get total supply", async function () {
         const totalSupply = await edcToken.getTotalSupply();
-        expect(totalSupply).to.equal(Number(INITIAL_SUPPLY) * (10 ** DECIMALS));
+        expect(totalSupply).to.equal(INITIAL_SUPPLY * BigInt((10 ** DECIMALS)));
     });
 });
