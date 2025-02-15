@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
 const INFURA_API_KEY = process.env.INFURA_API_KEY as string;
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY as string;
 
 const config: HardhatUserConfig = {
   solidity: "0.8.24",
@@ -30,6 +31,11 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 40000
+  }, etherscan: {
+    apiKey: ETHERSCAN_API_KEY
+  },
+  sourcify: {
+    enabled: true
   }
 };
 

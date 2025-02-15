@@ -34,7 +34,14 @@ describe("Certification", function () {
         const recipient = addr1.address;
         const metadataArgs: MetadataAgrs = [recipient, Date.now(), 1, 1, 1, 1];
 
-        await certificationContract.issueCertification(...metadataArgs);
+        const tx: ContractTransactionResponse = await certificationContract.issueCertification(...metadataArgs);
+        const receipt = await tx.wait();
+        const mintedCertificationId = receipt?.logs
+            .map(log => certificationContract.interface.parseLog(log))
+            .find(parsedLog => parsedLog?.name === "CertificationIssued")
+            ?.args.certificationId;
+
+        expect(mintedCertificationId).to.equal(certificationId);
 
         const certification = await certificationContract.getCertificationMetadata(certificationId);
 
